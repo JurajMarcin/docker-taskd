@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker-compose exec -T taskd cat ca.cert.pem > ca.cert.pem

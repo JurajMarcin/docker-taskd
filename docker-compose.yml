@@ -1,0 +1,23 @@
+version: "3.3"
+
+services:
+  taskd:
+    build:
+      context: .
+    environment:
+      - CERT_EXPIRATION=365
+      - CERT_ORGANIZATION=Some Organization
+      - CERT_CN=localhost
+      - CERT_COUNTRY=SK
+      - CERT_STATE=Some State
+      - CERT_LOCALITY=Some City
+      - TASKDDATA=/var/taskd
+      - SERVER=0.0.0.0
+      - PORT=53589
+    ports:
+      - 53589:53589/tcp
+    volumes:
+      - taskddata:/var/taskd
+
+volumes:
+  taskddata:

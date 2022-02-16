@@ -1,0 +1,15 @@
+#!/bin/sh
+
+ORG=$1
+USER=$2
+CERT=${3:-$USER}
+
+docker-compose exec taskd taskd add user $ORG $USER || exit 1
+
+docker-compose exec taskd cp ca.cert.pem ca.key.pem /usr/share/taskd/pki/ || exit 1
+
+docker-compose exec -Tw /usr/share/taskd/pki taskd ./generate.client $CERT 2> /dev/null || exit 1
+echo "Generated certificate for $CERT"
+
+docker-compose exec -Tw /usr/share/taskd/pki taskd cat $CERT.key.pem > $CERT.key.pem || exit 1
+docker-compose exec -Tw /usr/share/taskd/pki taskd cat $CERT.cert.pem > $CERT.cert.pem || exit 1
